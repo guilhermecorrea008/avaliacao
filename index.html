@@ -37,8 +37,8 @@
   <div id="err"></div>
 </div>
 <div id="s-conn" class="screen"><h1>Conectando…</h1><p id="connmsg">Um instante.</p></div>
-<div id="s-wait" class="screen"><h1>Conectado</h1><p>Aguarde, a sessão já vai começar.</p></div>
-<div id="s-intro" class="screen"><h1>Pronto para começar</h1><p>Você vai ver 8 fotos de cada vez. Escolha conforme for pedido, tocando na foto.</p><button class="b-start">Começar</button></div>
+<div id="s-wait" class="screen"><h1 class="hi">Conectado</h1><p class="tn"></p><p>Aguarde, a sessão já vai começar.</p></div>
+<div id="s-intro" class="screen"><h1 class="hi">Pronto para começar</h1><p class="tn"></p><p>Você vai ver 8 fotos de cada vez. Escolha conforme for pedido, tocando na foto.</p><button class="b-start">Começar</button></div>
 <div id="s-part2" class="screen"><h1>Segunda parte</h1><p>Agora vão aparecer as fotos que sobraram.</p><button class="b-start">Continuar</button></div>
 <div id="s-pause" class="screen"><h1>Pausa</h1><p>Aguarde um momento.</p></div>
 <div id="s-end" class="screen"><h1>Obrigado.</h1><p>Pode fechar esta página.</p></div>
@@ -173,6 +173,7 @@ function start(){
       conn=c; show('s-wait');
       c.on('data',m=>{
         if(m.t==='img'){ IMGS[m.set]=m.imgs; if(lastScreen&&lastScreen.kind==='cards'&&lastScreen.set===m.set) render(lastScreen); }
+        else if(m.t==='who'){ if(m.nome) document.querySelectorAll('.hi').forEach(h=>h.textContent='Olá, '+m.nome+'!'); if(m.n) document.querySelectorAll('.tn').forEach(p=>p.textContent=m.n+'ª tiragem'); }
         else if(m.t==='screen') render(m.screen);
       });
       c.on('close',()=>{ if(!ended) show('s-lost'); });
@@ -182,6 +183,7 @@ function start(){
   });
 }
 $('go').onclick=start;
+(()=>{ const h=decodeURIComponent(location.hash.slice(1)).toUpperCase().replace(/[^A-Z0-9]/g,''); if(/^[A-Z]{2}[0-9]{2}$/.test(h)){ $('code').value=h; start(); } })();
 $('code').addEventListener('keydown',e=>{ if(e.key==='Enter') start(); });
 </script>
 </body>
