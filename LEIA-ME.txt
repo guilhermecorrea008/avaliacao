@@ -1,0 +1,88 @@
+SZONDI – APLICAÇÃO ONLINE (administrador + participante)
+
+Arquivos desta pasta
+  index.html  -> página da PACIENTE (é o link que você manda para ela)
+  admin.html  -> SUA página (fichas, códigos de acesso, acompanhamento ao vivo)
+
+As fotos e a tabela de correspondência estão dentro do admin.html, CRIPTOGRAFADAS.
+Sem a senha mestra ninguém consegue ver nada, nem quem abrir o código no GitHub.
+O index.html (da paciente) não contém foto nenhuma: as cartas chegam a ela só durante
+a sessão, pela conexão direta com a sua página, depois que ela digita o código.
+
+------------------------------------------------------------------
+PUBLICAR NO GITHUB PAGES (uma vez só)
+  1. Crie uma conta gratuita em github.com (se ainda não tiver).
+  2. Clique em "+" (canto superior direito) > "New repository".
+     Nome sugerido: avaliacao   |  marque "Public"  |  "Create repository".
+  3. Na página do repositório, clique em "uploading an existing file",
+     arraste index.html e admin.html (e este LEIA-ME, se quiser) e clique em "Commit changes".
+  4. Vá em Settings > Pages. Em "Branch", escolha "main" e "/ (root)" e clique em Save.
+  5. Em 1 ou 2 minutos aparece o endereço, algo como:
+        https://SEU-USUARIO.github.io/avaliacao/
+     - Paciente:  https://SEU-USUARIO.github.io/avaliacao/
+     - Você:      https://SEU-USUARIO.github.io/avaliacao/admin.html   (guarde nos favoritos)
+
+ALTERNATIVA: NETLIFY (ainda mais simples)
+  app.netlify.com/drop > arraste esta pasta inteira > pronto. O endereço é parecido.
+
+------------------------------------------------------------------
+COMO USAR
+  1. Abra o admin.html (no PC ou no celular) e digite a senha mestra.
+  2. Adicione o paciente, abra a ficha e clique em "Gerar código de acesso".
+  3. Mande para a paciente o link e o código (botão "Copiar mensagem").
+  4. Ela abre o link, digita o código (2 letras e 2 números) e toca em "Começar". Você vê ao vivo cada escolha,
+     com as marcas + / − e a letra do fator (ela não vê nada disso).
+  5. Ao terminar, o resultado entra sozinho na ficha como a próxima rodada e o código expira.
+     Se ela não usar o código, ele expira em 2 horas.
+
+  - Mantenha a sua página aberta durante o teste: é ela que "serve" as cartas.
+    No celular, não deixe a tela apagar.
+  - Se a conexão dela cair, ela recarrega a página e digita o mesmo código para continuar.
+  - Desfazer, Pausar e Cancelar ficam na sua tela.
+
+RELATÓRIOS
+  Durante o teste, a sua tela mostra o "Relatório ao vivo": tabela e gráfico do perfil, que vão
+  se formando a cada escolha.
+  Ao terminar, a rodada abre com: tabela, gráfico, formas de existência, comparação com a anterior
+  e pontos de atenção.
+  Na ficha da paciente, "Relatório e análise da série": você marca as tiragens e as partes que quer, e:
+    - Imprimir / salvar PDF   (no celular, "Imprimir" > "Salvar como PDF")
+    - Excel (Modelo Szondi .xlsm)  -> o seu Modele-SZONDI já preenchido (até 10 tiragens).
+      Ao abrir no Excel, clique em "Ativar conteúdo" para as macros calcularem.
+    - Valores (.csv) e Relatório (.html)
+  Os arquivos vão para a pasta de Downloads do aparelho.
+
+LEITURA PELO LIVRO (Lehrbuch der experimentellen Triebdiagnostik, 3ª ed. 1972)
+  O relatório da série e o de cada rodada trazem, com a página do livro:
+    - fórmula pulsional, proporção de latências e classe pulsional pelas regras do livro (cap. XX),
+      com o que o livro diz da classe (cap. XXI) e a comparação com a classe esperada para a idade (Tab. 15);
+    - quociente de tensão e % de reações sintomáticas, com as faixas do livro;
+    - índice social e índice Dur-Moll (cap. XXIII–XXIV);
+    - nome de cada quadro vetorial (Tab. 5–8: S, P, Sch, C – 64 quadros);
+    - borda e meio (cap. XVIII): censuras presentes, ausentes, positivas e negativas;
+    - frente × fundo (cap. XIX): concordância do fundo com a frente e com o fundo teórico;
+    - traços de caráter (Experimental Diagnostics of Drives, cap. XVI, 131 traços: Caim puro, Abel puro,
+      carrasco piedoso, etc.);
+    - sinais da série: rigidez, inversões bruscas, blocos e reações extremas;
+    - lembretes de leitura do próprio Szondi (nada de "mosaico", ler por sexo, idade, cultura...).
+  Preencha sexo e ano de nascimento na ficha: o livro lê o mesmo perfil de modo diferente conforme eles.
+  Os cálculos do livro foram testados contra os casos 11, 12, 14, 16 e 62 do livro (fórmula, latências,
+  classe, quociente) e o caso 62 é refeito toda vez que a página abre.
+
+CONFERÊNCIAS AUTOMÁTICAS
+  - Ao abrir: confere a chave das cartas e refaz um teste de cálculo com 20 tiragens cujos
+    resultados foram tirados do próprio Modele-SZONDI. Se algo não bater, aparece um aviso.
+  - Durante o teste: cada conjunto é conferido (4 na frente com 2+2; 2 no fundo entre as 4 que sobraram).
+  - No fim: 48 cartas, cada uma usada uma vez, 6 por fator, 12 + 12 em cada plano, fator = chave.
+  - Toda gravação é relida e decifrada para confirmar que ficou igual.
+  - O Excel só é gerado se as tiragens passarem na conferência; depois de gerado, é reaberto e relido.
+
+FICHAS
+  Ficam guardadas só no aparelho onde você aplicou, criptografadas com a senha mestra.
+  Para juntar PC e celular: "Exportar fichas" num aparelho e "Importar" no outro.
+  Faça uma exportação de vez em quando como backup (limpar os dados do navegador apaga as fichas).
+
+LIMITAÇÃO TÉCNICA
+  A ligação entre as duas páginas é direta (navegador a navegador). Em algumas redes muito
+  fechadas (algumas empresas, alguns 4G) ela pode não conseguir conectar. Nesse caso, use o
+  plano B: "Szondi - aplicacao na tela.html" com compartilhamento de tela.
