@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>Sessão</title>
 <style>
   :root{--bg:#303030;--fg:#d2d2d2;--muted:#8a8a8a}
@@ -32,7 +35,7 @@
 </head>
 <body>
 <div id="s-code" class="screen on">
-  <div style="position:fixed;bottom:4px;right:8px;font-size:11px;color:#777">versão 15/11</div>
+  <div style="position:fixed;bottom:4px;right:8px;font-size:11px;color:#777">versão 15/11e</div>
   <h1>Bem-vindo(a)</h1>
   <p>Digite o código que você recebeu.</p>
   <input id="code" maxlength="4" placeholder="AB12" autocomplete="off" autocapitalize="characters" inputmode="text">
@@ -91,7 +94,7 @@ const NET = (() => {
         onConnection(conn);
       };
       setTimeout(() => onReady && onReady(), 10);
-      return { destroy() { lobby.close(); }, check() {} };
+      return { destroy() { lobby.close(); }, check() {}, renew() {} };
     }
     let peer = null, dead = false, tries = 0;
     function make() {
@@ -111,7 +114,9 @@ const NET = (() => {
     make();
     return {
       destroy() { dead = true; try { peer.destroy(); } catch (e) {} },
-      check() { if (dead || !peer) return; if (peer.destroyed) make(); else if (peer.disconnected) { try { peer.reconnect(); } catch (e) { make(); } } }
+      check() { if (dead || !peer) return; if (peer.destroyed) make(); else if (peer.disconnected) { try { peer.reconnect(); } catch (e) { make(); } } },
+      // refaz o registro no servidor do zero (o iPhone deixa a ligação "morta-viva" quando o Safari vai para segundo plano)
+      renew() { if (dead) return; try { peer.destroy(); } catch (e) {} tries = 0; setTimeout(() => { if (!dead) make(); }, 300); }
     };
   }
 
@@ -175,7 +180,9 @@ function render(sc){
   }
   show('test');
 }
-document.querySelectorAll('.b-start').forEach(b=>b.onclick=()=>conn&&conn.send({t:'go'}));
+function telaCheia(){ try{ const e=document.documentElement, f=e.requestFullscreen||e.webkitRequestFullscreen; if(f&&!(document.fullscreenElement||document.webkitFullscreenElement)){ const r=f.call(e,{navigationUI:'hide'}); if(r&&r.catch) r.catch(()=>{}); } }catch(e){} }
+document.querySelectorAll('.b-start').forEach(b=>b.onclick=()=>{ telaCheia(); conn&&conn.send({t:'go'}); });
+$('test').addEventListener('click',()=>{ if(!(document.fullscreenElement||document.webkitFullscreenElement)) telaCheia(); });
 
 function start(){
   const code=$('code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
