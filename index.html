@@ -32,7 +32,7 @@
 </head>
 <body>
 <div id="s-code" class="screen on">
-  <div style="position:fixed;bottom:4px;right:8px;font-size:11px;color:#777">versão 12/11 – bolinha</div>
+  <div style="position:fixed;bottom:4px;right:8px;font-size:11px;color:#777">versão 15/11</div>
   <h1>Bem-vindo(a)</h1>
   <p>Digite o código que você recebeu.</p>
   <input id="code" maxlength="4" placeholder="AB12" autocomplete="off" autocapitalize="characters" inputmode="text">
@@ -155,7 +155,7 @@ const NET = (() => {
 <script>
 const $=id=>document.getElementById(id);
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));}
-const IMGS={}; let lastMsg=0, conn=null, ended=false, lastScreen=null, RETRY=false, RETRYN=0;
+const IMGS={}; let lastMsg=0, conn=null, ended=false, lastScreen=null, RETRY=false, RETRYN=0, FIRST=0;
 const ERR={'peer-unavailable':'Código não encontrado ou já expirado. Confira o código com o seu psicólogo.','busy':'Este código já está em uso.','timeout':'Não foi possível conectar. Tente de novo; se persistir, avise o seu psicólogo.'};
 
 function render(sc){
@@ -183,7 +183,7 @@ function start(){
   $('err').textContent=''; show('s-conn');
   NET.join(code,{
     onOpen(c){
-      conn=c; RETRYN=0; if(!RETRY) show('s-wait');
+      conn=c; RETRYN=0; FIRST=0; if(!RETRY) show('s-wait');
       lastMsg=Date.now();
       c.on('data',m=>{ lastMsg=Date.now(); if(m.t==='ping') return;
         if(m.t==='img'){ IMGS[m.set]=m.imgs; if(lastScreen&&lastScreen.kind==='cards'&&lastScreen.set===m.set) render(lastScreen); }
@@ -193,7 +193,10 @@ function start(){
       c.on('close',()=>{ if(!ended){ show('s-lost'); RETRY=true; setTimeout(start,3000); } });
       c.send({t:'hello'});
     },
-    onError(e){ if(RETRY&&!ended&&RETRYN++<60){ show('s-lost'); setTimeout(start,4000); return; } show('s-code'); $('err').textContent=ERR[e.type]||ERR.timeout; }
+    onError(e){ if(RETRY&&!ended&&RETRYN++<60){ show('s-lost'); setTimeout(start,4000); return; }
+      const t=(e&&e.type)||'erro';
+      if(t!=='peer-unavailable'&&FIRST<3){ FIRST++; setTimeout(start,2500); return; }   // tenta sozinho mais 3 vezes antes de mostrar erro
+      FIRST=0; show('s-code'); $('err').textContent=(ERR[t]||ERR.timeout)+' ['+t+']'; }
   });
 }
 $('go').onclick=start;
